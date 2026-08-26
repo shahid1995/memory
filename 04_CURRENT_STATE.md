@@ -1,59 +1,62 @@
 # StrikeNova — Current State
 
-**Last documented:** 2026-08-25
+**Last documented:** 2026-08-26
 
-## Project Status
+## Authoritative Status
 
-StrikeNova is in active architecture, research and implementation development.
+The current implementation baseline is the remote application repository `shahid1995/-options-dashboard`, specifically feature branch `feat/phase-7-8a-historical-gex` at `bc9fe02679c669d5e7a547adfc1cee4fcf95881c`. Main remains separate at `ef46827e87fc6da4346606e3c754cab9a1c4732a` and PR #18 is open/draft/not merged.
 
-## Known Development Status
+A detailed reconciliation is recorded in `08_CURRENT_STATE_AUDIT_2026-08-26.md`.
 
-A development history exists through the capital/margin foundation and subsequent research/product planning. The project has discussed and/or implemented multiple analytics and trading foundations.
+## Verified Implementation Foundations
 
-## Current Major Focus
+- Next.js/React frontend with existing authenticated app pages and public marketing pages.
+- FastAPI backend with auth, option-chain, paper-trading, strategy, GEX, historical-GEX and candle routers.
+- Upstox broker integration and broker-neutral gateway/adapter architecture.
+- Paper trading, strategy templates/resolution, execution audit/idempotency, portfolio/performance and capital/margin foundations.
+- Historical market-data pipeline covering NIFTY candles, option candles, contract metadata, candle validation/normalization/retry/coverage, strike/expiry selection, historical Greeks and daily ingestion.
+- Historical GEX calculation, analytics, research and data-quality infrastructure.
+- Database code supports PostgreSQL through `DATABASE_URL` and a deterministic SQLite fallback for local use.
 
-Recent work and planning has centered around:
+## Research Status
 
-- GEX integration and token/data management
-- Scalping research
-- Best Strike Selection for option buyers
-- POS/gap prediction research
-- Database/infrastructure alternatives
-- SEBI/IP execution architecture
-- Organic marketing
-- Chart licensing research
-- Trading Journal improvements
-- Additional market-data points such as CE/PE ask-side information
-- Option price projection
+Historical GEX research is validated as a research/structural analytics domain, not as a reliable standalone directional signal. The strongest current interpretation is structural/volatility-regime information.
 
-## Important Workflow State
+Best Strike Selection, POS/gap prediction, scalping, IV history and option-price projection remain research/product-development areas until leakage-safe out-of-sample evidence supports productionization.
 
-- The user wants this conversation to serve as the **StrikeNova Project Control Center**.
-- The `shahid1995/memory` repository is the long-term project-memory repository.
-- Implementation work may be delegated to development tooling such as FreeBuff, but production deployment should remain under the user's explicit/manual control unless that policy is deliberately changed.
+## Production Readiness
 
-## Verification Needed
+StrikeNova is **not yet production-ready for a 1,000-user commercial deployment**. Important gates remain around branch reconciliation, test-system reproducibility, data-pipeline operational verification, authentication/authorization/data isolation, rate limiting, observability/auditability and final infrastructure selection.
 
-This initial memory baseline was created from accumulated project context. It is not a substitute for an audit of the current StrikeNova application repository.
+## Immediate Development Direction
 
-The next state-improvement task should be a repository audit that verifies:
+FreeBuff's next work should be stabilization and verification, not new trading features:
 
-1. Current branch and commit
-2. Frontend stack
-3. Backend stack
-4. Database and migrations
-5. Current API surface
-6. Current market-data integrations
-7. WebSocket implementation
-8. Analytics engines
-9. Paper trading implementation
-10. Capital/margin implementation
-11. Authentication/authorization
-12. Tests and CI
-13. Deployment configuration
-14. Environment/secrets handling
-15. Current phase completion
+1. Reconcile feature branch with current main without merging yet.
+2. Verify repository integrity and runtime-artifact exclusion.
+3. Stabilize and reproduce backend/frontend test execution.
+4. Verify historical data-pipeline behavior safely and idempotently.
+5. Perform the production security/architecture gate.
+6. Decide infrastructure/database changes from measured requirements.
 
-## Rule
+Only after these gates should major research/product work resume.
 
-When this document conflicts with the actual application repository, the discrepancy must be identified and resolved rather than silently choosing one source.
+## Workflow State
+
+- This conversation is the **StrikeNova Project Control Center**.
+- `shahid1995/memory` is the long-term project-memory repository.
+- Application implementation lives in `shahid1995/-options-dashboard`.
+- FreeBuff may implement development changes, but production deployment remains under explicit/manual project-owner control.
+
+## Constraints
+
+- Prefer genuinely free/lifetime-free tools and services where practical.
+- Do not assume paid market-data services.
+- Do not introduce paid dependencies merely for convenience.
+- Keep customer/broker-authorized market-data flows compliant with applicable terms.
+- Keep paper/live/research boundaries explicit.
+- Do not present unvalidated research as reliable trading signals.
+
+## Reconciliation Rule
+
+When memory conflicts with the actual application repository, the discrepancy must be recorded and resolved rather than silently choosing one source.
