@@ -5,8 +5,7 @@ This register contains items that require verification, resolution or explicit d
 ## Application / Git
 
 - PR #18 is open/draft/not merged.
-- Feature branch `feat/phase-7-8a-historical-gex` is currently 37 commits ahead and 1 commit behind `main`; branch history is diverged and needs a safe integration strategy.
-- Exact reconciliation of `backfill_orchestrator.py` and any remaining historical artifacts should be confirmed before merge.
+- Feature branch `feat/phase-7-8a-historical-gex` has been reconciled with current `main` without merging the PR; it is now 38 commits ahead and 0 behind `main`.
 - `options-dashboard-project/docs/PROJECT_STATUS.md` contains older phase/deployment claims and should not be treated as the sole current status authority.
 
 ## Architecture / Implementation
@@ -23,11 +22,12 @@ This register contains items that require verification, resolution or explicit d
 - Historical candle/option/Greeks/GEX pipeline is implemented on the feature branch, but continuous production operation and scheduled ingestion still require operational verification.
 - Data licensing, provider limits, broker terms and redistribution constraints must be verified before commercial use.
 - Production data must remain separate from development/test writes.
+- `backfill_orchestrator.py` is present and is designed as a CLI-only, resumable, idempotent historical ingestion orchestrator; its safe operational execution still requires verification against non-production/test data.
 
 ## Product / Research
 
 - GEX methodology should not be presented as a standalone directional predictor; current research supports structural/volatility-regime use.
-- POS/gap-prediction methodology requires independent leakage-safe validation.
+- POS/gap-prediction methodology requires independent leakage-safe validation; the overnight-gap blueprint is a research specification, not an implemented production signal.
 - Scalping/high-confidence setup methodology requires rigorous historical and out-of-sample validation.
 - Best Strike Selection needs a defined scoring model, outcome definitions and validation methodology.
 - Option-price projection must document assumptions and limitations.
