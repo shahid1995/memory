@@ -1,8 +1,8 @@
 # StrikeNova — Project Status
 
-**Purpose:** Living high-level status record for the StrikeNova project.  
-**Last updated:** 2026-08-27  
-**Status source:** StrikeNova Project Control Center + verified project-memory/application-repository audits.
+**Purpose:** Living high-level status record for the StrikeNova project.
+**Last updated:** 2026-08-27
+**Status source:** StrikeNova Project Control Center + verified application-repository audits.
 
 > This file is continuously updated. It records the current known state, not aspirations. A feature is not considered implemented merely because it was discussed or planned.
 
@@ -12,43 +12,31 @@
 
 ### 🟡 ACTIVE DEVELOPMENT — NOT PRODUCTION READY
 
-StrikeNova has substantial trading, analytics, paper-trading, historical-data and GEX foundations. The project is now moving toward the platform infrastructure required for secure multi-user commercial operation.
-
-The next major platform capability being planned is:
-
-> **Identity + User Management + Subscriptions/Entitlements + Broker Connection Ownership + User Portal + Admin Portal**
-
-This is documented as **Phase 10**.
+StrikeNova has substantial trading, analytics, paper-trading, historical-data and GEX foundations. The project is now implementing the platform infrastructure required for secure multi-user commercial operation.
 
 ---
 
-## 2. Current Application Baseline
+## 2. Application Baseline
 
-**Application repository:** `shahid1995/-options-dashboard`  
+**Application repository:** `shahid1995/-options-dashboard`
 **Memory repository:** `shahid1995/memory`
 
-The application currently has, based on the latest documented repository audit:
+Verified foundations include:
 
 - Next.js/React frontend.
 - FastAPI backend.
-- Existing authenticated application pages.
 - Upstox OAuth integration.
-- Session-based authentication.
-- Per-session broker-token isolation improvements.
+- Session-based authentication and broker-token isolation.
 - Broker-neutral gateway/adapter architecture.
-- Paper trading and portfolio foundations.
-- Execution authorization/idempotency/audit foundations.
-- Capital/margin foundation.
+- Paper trading, execution authorization/idempotency and capital/margin foundations.
 - GEX and historical-GEX infrastructure.
-- Historical market-data ingestion and validation infrastructure.
+- Historical market-data ingestion/validation.
 - PostgreSQL support with local SQLite fallback.
-- Security hardening including OAuth state protection, CORS controls, rate limiting and production-readiness checks.
+- OAuth state protection, CORS controls, rate limiting and other production-readiness security work.
 
 ### Important limitation
 
-The current authentication model is still substantially coupled to broker OAuth/session identity. A durable StrikeNova application identity is not yet fully established.
-
-Therefore the project should **not** treat the current authentication/session implementation as the final commercial user-management architecture.
+The original authentication model was substantially broker/session-coupled. Phase 10 is migrating this toward a durable StrikeNova application identity while preserving the existing broker gateway and token store.
 
 ---
 
@@ -62,21 +50,21 @@ Therefore the project should **not** treat the current authentication/session im
 | Broker integration | 🟢 | Upstox + broker-neutral architecture |
 | Paper trading | 🟢 | Existing foundation |
 | Capital/margin | 🟢 | Existing foundation |
-| GEX / historical GEX | 🟢 | Research/analytics foundations exist |
-| Historical market data | 🟢 | Ingestion/validation foundations exist |
-| Authentication | 🟡 | Existing, but broker-coupled model needs evolution |
-| Persistent StrikeNova user identity | 🔴 | Phase 10 |
-| Persistent session/device management | 🔴 | Phase 10 |
-| RBAC / authorization model | 🔴 | Phase 10 |
-| Subscription plans | 🔴 | Phase 10 |
-| Server-side entitlements | 🔴 | Phase 10 |
-| User account portal | 🔴 | Phase 10 |
-| Admin portal | 🔴 | Phase 10 |
-| Admin RBAC | 🔴 | Phase 10 |
+| GEX / historical GEX | 🟢 | Analytics/research foundations |
+| Historical market data | 🟢 | Ingestion/validation foundations |
+| Authentication | 🟡 | Existing auth is being evolved |
+| Persistent StrikeNova user identity | 🟡 | Phase 10.1 implemented on PR #19; merge/CI pending |
+| Persistent session/device management | 🟡 | Durable session ownership started; full device UX remains |
+| RBAC / authorization | 🔴 | Phase 10.4 |
+| Subscription plans | 🔴 | Phase 10.5 |
+| Server-side entitlements | 🔴 | Phase 10.5 |
+| User account portal | 🔴 | Phase 10.7 |
+| Admin portal | 🔴 | Phase 10.8+ |
+| Admin RBAC | 🔴 | Phase 10.4/10.8 |
 | Formal audit/event system | 🟡 | Existing security/execution audit foundations; unified platform audit remains |
-| Admin MFA | 🔴 | Phase 10 |
-| Commercial onboarding readiness | 🔴 | Blocked by identity/security/subscription gates |
-| Production readiness | 🔴 | Still requires broader security, operational and infrastructure gates |
+| Admin MFA | 🔴 | Phase 10.12 |
+| Commercial onboarding readiness | 🔴 | Blocked by remaining identity/security/subscription gates |
+| Production readiness | 🔴 | Broader security, operations and infrastructure gates remain |
 
 ---
 
@@ -84,19 +72,18 @@ Therefore the project should **not** treat the current authentication/session im
 
 ### Phase 10 — User Management, Identity, Subscriptions & Admin Portal
 
-**Status:** 🟡 Planned / architecture specification created  
-**Implementation:** Not started
+**Status:** 🟡 In Progress
 
 Authoritative plan:
 
 `phases/PHASE-10-USER-MANAGEMENT-ADMIN-PORTAL.md`
 
-### Phase 10 sequence
+### Phase sequence
 
-1. 🔴 10.0 Repository audit/design freeze
-2. 🔴 10.1 Persistent identity foundation
+1. 🟢 10.0 Repository audit/design freeze — completed for current implementation slice
+2. 🟡 10.1 Persistent identity foundation — implemented on application PR #19; CI/merge pending
 3. 🔴 10.2 Authentication/account access
-4. 🔴 10.3 Session/device management
+4. 🔴 10.3 Session/device management (full UX/lifecycle)
 5. 🔴 10.4 RBAC/authorization
 6. 🔴 10.5 Subscription/entitlements
 7. 🔴 10.6 Broker connection ownership/security
@@ -114,9 +101,54 @@ Authoritative plan:
 
 ---
 
-## 5. Target Architecture Direction
+## 5. Phase 10.1 — Current Implementation
 
-The target commercial model is:
+### Implemented in application PR #19
+
+Branch:
+
+`feat/phase-10-identity-foundation`
+
+Head commit:
+
+`e6df4750f2db25b1eeb386fe5f45aaee56423684`
+
+Added:
+
+- Durable `users` identity table.
+- Durable `user_sessions` table.
+- Stable internal StrikeNova UUID user ID.
+- Upstox broker identity mapping using broker/provider + broker user ID.
+- Session ownership linked to persistent user ID.
+- SHA-256 hashing of stored session identifiers; raw session IDs remain in the existing token store.
+- `/auth/me` account identity endpoint with no broker-secret exposure.
+- Durable session revocation on logout.
+- Platform account suspension is not silently undone by broker login.
+- Focused identity/session isolation tests.
+
+### Important boundary
+
+This is deliberately **not** the final Phase 10 system. It does not yet implement:
+
+- customer email/password/passkey authentication,
+- RBAC,
+- subscriptions,
+- entitlements,
+- broker-connection persistence as the final domain model,
+- user portal,
+- admin portal,
+- admin MFA,
+- unified audit/event system.
+
+### Validation
+
+Tests were added, but the current tool environment did not provide a local checkout/runtime capable of executing the complete application test suite. GitHub CI is therefore the required validation gate before merge.
+
+No production deployment was performed.
+
+---
+
+## 6. Target Architecture
 
 ```text
 StrikeNova Account
@@ -140,13 +172,11 @@ StrikeNova User
 Broker Account
 ```
 
-A user should be able to have a StrikeNova account independently of whether a broker is currently connected.
-
-Broker authorization should be attached to a user-owned broker connection and should not define the permanent application identity.
+Broker authorization must eventually be attached to a user-owned broker connection rather than defining the permanent application identity.
 
 ---
 
-## 6. Commercial Product Assumptions
+## 7. Commercial Assumptions
 
 Current planned pricing discussed for StrikeNova:
 
@@ -154,31 +184,7 @@ Current planned pricing discussed for StrikeNova:
 - Annual: ₹4,000
 - Long-term target: 10,000+ users.
 
-These are product assumptions, not implementation facts. Pricing must remain configurable and must not be hard-coded into frontend feature checks.
-
----
-
-## 7. Rules for Updating This File
-
-Whenever a significant implementation session occurs:
-
-1. Verify the application repository state.
-2. Update the relevant phase status.
-3. Record what actually changed.
-4. Record tests executed and results.
-5. Record remaining work.
-6. Record important risks/blockers.
-7. Update `04_CURRENT_STATE.md` when the verified project baseline changes.
-8. Add architectural decisions to `05_DECISIONS.md` when a decision is formally accepted.
-9. Never mark work complete based only on discussion.
-
-### Required status language
-
-- `🔴 Not Started`
-- `🟡 In Progress`
-- `🟢 Complete`
-- `🟠 Blocked`
-- `⚪ Deferred`
+These remain product assumptions and must not be hard-coded into feature authorization.
 
 ---
 
@@ -186,50 +192,64 @@ Whenever a significant implementation session occurs:
 
 ### Discovered
 
-The application already contains significant authentication/session, broker isolation, trading user-scoping, PostgreSQL and security foundations. The major missing platform layer is persistent customer identity and the management systems around it.
+The application already had substantial authentication/session, broker isolation, trading user-scoping, PostgreSQL and security foundations. The major missing platform layer was persistent customer identity and the management systems around it.
 
-### Decided for planning
+### Decided
 
-User management and admin functionality should be built as a unified platform identity/access layer rather than as an isolated admin feature.
-
-The admin portal should use the same authoritative backend identity/authorization model as the customer application.
-
-The broker gateway and existing authentication/security foundations should be extended rather than duplicated.
+User management and administration are being built as a unified identity/access platform layer, not as a disconnected admin feature. The existing broker gateway and token store are being extended rather than duplicated.
 
 ### Changed
 
 - Created the complete Phase 10 start-to-finish plan.
-- Created this living project status file.
+- Created this living status file.
+- Started application implementation of Phase 10.1.
+- Created application PR #19 for the durable identity foundation.
 
 ### Tested
 
-No application code was changed in this session. No application tests were run.
+- Added focused identity/session tests.
+- Full repository test suite has **not yet been executed in this environment**.
+- GitHub CI is the next validation gate.
 
 ### Remaining
 
-- Perform the Phase 10.0 implementation-repository audit immediately before coding.
-- Produce/finalize the detailed architecture and data-model specification from the current application schema.
-- Approve the migration strategy before changing authentication identity.
-- Implement Phase 10 incrementally with tests at every gate.
+1. Validate PR #19 through CI and code review.
+2. Merge only after tests pass and implementation is reconciled.
+3. Continue Phase 10.2/10.3 authentication and session lifecycle design/implementation.
+4. Build RBAC before exposing any admin functionality.
+5. Continue through subscriptions, broker ownership, user portal and admin portal.
 
 ### Important risks
 
 - Broker-coupled identity must be migrated without breaking existing sessions.
-- Cross-user data/broker isolation is critical.
+- Cross-user data and broker isolation is critical.
 - Admin privilege escalation must be prevented.
 - Subscription/entitlement enforcement must be server-authoritative.
 - Broker secrets must never be exposed through user/admin interfaces.
+- The current schema bootstrap approach must eventually be reconciled with a proper migration strategy before commercial production.
 
 ### Recommended next step
 
-**Start Phase 10.0 only:** perform a fresh read-only audit of the application repository's authentication, database schema, user ownership, broker token handling, frontend guards, migrations and tests. Do not implement schema changes until that audit is reconciled with this Phase 10 plan.
+**Validate and merge Phase 10.1 first. Then begin Phase 10.2/10.3 rather than jumping directly to the admin UI.**
 
 ---
 
-## 9. Project Control Rule
+## 9. Status Rules
 
-The StrikeNova Project Control Center conversation is the working coordination space. This repository is the durable memory.
+- `🔴 Not Started`
+- `🟡 In Progress`
+- `🟢 Complete`
+- `🟠 Blocked`
+- `⚪ Deferred`
 
-The application repository is the source of truth for what is actually implemented.
+Whenever a significant implementation session occurs:
 
-When documentation and implementation disagree, record and reconcile the discrepancy rather than silently choosing one.
+1. Verify the application repository.
+2. Update the relevant phase status.
+3. Record what actually changed.
+4. Record tests executed and results.
+5. Record remaining work and risks.
+6. Update `04_CURRENT_STATE.md` when the verified baseline changes.
+7. Add accepted architectural decisions to `05_DECISIONS.md`.
+
+The application repository remains the source of truth for what is actually implemented; this repository is the durable project memory.
